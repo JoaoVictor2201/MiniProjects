@@ -1,13 +1,24 @@
 'use strict'
 
-const openModal = () => document.getElementById('modal')
-    .classList.add('active')
+const openModal = () => document.getElementById('modal').classList.add('active');
 
-const closeModal = () => document.getElementById('modal')
-    .classList.remove('active')
+const closeModal = () => document.getElementById('modal').classList.remove('active');
 
-document.getElementById('cadastrarCliente')
-    .addEventListener('click', openModal)
+const tempClient = {
+    nome: "João",
+    email: "franca.jv@hotmail.com",
+    phone: "11998132120",
+    city: "São Paulo"
+}
 
-document.getElementById('modalClose')
-    .addEventListener('click', closeModal)
+//CRUD - Create Read Update Delete
+
+const createClient = (client) => {
+    localStorage.setItem("db_client", JSON.stringify(client));
+}
+
+
+// EVENTOS
+document.getElementById('cadastrarCliente').addEventListener('click', openModal);
+
+document.getElementById('modalClose').addEventListener('click', closeModal);

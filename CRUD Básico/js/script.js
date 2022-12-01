@@ -1,8 +1,10 @@
 'use strict'
 
 const openModal = () => document.getElementById('modal').classList.add('active');
-
-const closeModal = () => document.getElementById('modal').classList.remove('active');
+const closeModal = () => {
+    clearFields();
+    document.getElementById('modal').classList.remove('active');
+}
 
 const tempClient = {
     name: 'Gabriel',
@@ -50,7 +52,6 @@ const saveClient = () => {
             city: document.getElementById('cidade').value
         }
         createClient(client);
-        clearFields();
         closeModal();
     }
 }
@@ -64,4 +65,5 @@ const clearFields = () => {
 // EVENTOS
 document.getElementById('cadastrarCliente').addEventListener('click', openModal);
 document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('cancelar').addEventListener('click', closeModal);
 document.getElementById('salvar').addEventListener('click', saveClient);

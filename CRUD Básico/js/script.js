@@ -1,61 +1,61 @@
 'use strict'
 
 
-const openModal = () => document.getElementById('modal').classList.add('active');
-const closeModal = () => {
-    clearFields();
+const OpenModal = () => document.getElementById('modal').classList.add('active');
+const CloseModal = () => {
+    ClearFields();
     document.getElementById('modal').classList.remove('active');
 }
 
-const getLocalStorage = () => JSON.parse(localStorage.getItem('db_client')) ?? [];
-const setLocalStorage = (dbClient) => localStorage.setItem('db_client', JSON.stringify(dbClient));
+const GetLocalStorage = () => JSON.parse(localStorage.getItem('db_client')) ?? [];
+const SetLocalStorage = (dbClient) => localStorage.setItem('db_client', JSON.stringify(dbClient));
 
 //CRUD - Create Read Update Delete
 
-const readClient = () => getLocalStorage();
+const ReadClient = () => GetLocalStorage();
 
-const createClient = (client) => {
-    const dbClient = readClient();
+const CreateClient = (client) => {
+    const dbClient = ReadClient();
     dbClient.push(client);
-    setLocalStorage(dbClient);
+    SetLocalStorage(dbClient);
 }
 
-const updateClient = (index, client) =>  {
-    const dbClient = readClient();
+const UpdateClient = (index, client) =>  {
+    const dbClient = ReadClient();
     dbClient[index] = client;
-    setLocalStorage(dbClient);
+    SetLocalStorage(dbClient);
 }
 
-const deleteClient = (index) => {
-    const dbClient = readClient();
+const DeleteClient = (index) => {
+    const dbClient = ReadClient();
     dbClient.splice(index, 1);
-    setLocalStorage(dbClient);
+    SetLocalStorage(dbClient);
 }
 
 //Interações de usuário
-const fieldsFilled = () => {
+const FieldsFilled = () => {
     return document.getElementById('form').reportValidity();
 }
 
-const saveClient = () => {
-    if (fieldsFilled()) {
+const SaveClient = () => {
+    if (FieldsFilled()) {
         const client = {
             name: document.getElementById('nome').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('celular').value,
             city: document.getElementById('cidade').value
         }
-        createClient(client);
-        closeModal();
+        CreateClient(client);
+        CloseModal();
     }
 }
 
-const clearFields = () => {
+const ClearFields = () => {
     const fields = document.querySelectorAll('.modal-field');
     fields.forEach(field => field.value = '');
 }
 
-const createTableRow = (client) => {
+const CreateTableRow = (client) => {
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
         <td>${client.name}</td>
@@ -70,15 +70,15 @@ const createTableRow = (client) => {
     document.querySelector('#tbClients tbody').appendChild(newRow);
 }
 
-const updateTable = () => {
-    const dbClient = readClient();
-    dbClient.forEach(createTableRow);
+const renderTable = () => {
+    const dbClient = ReadClient();
+    dbClient.forEach(CreateTableRow);
 }
 
-updateTable();
+renderTable();
 
 // EVENTOS
-document.getElementById('cadastrarCliente').addEventListener('click', openModal);
-document.getElementById('modalClose').addEventListener('click', closeModal);
-document.getElementById('cancelar').addEventListener('click', closeModal);
-document.getElementById('salvar').addEventListener('click', saveClient);
+document.getElementById('cadastrarCliente').addEventListener('click', OpenModal);
+document.getElementById('modalClose').addEventListener('click', CloseModal);
+document.getElementById('cancelar').addEventListener('click', CloseModal);
+document.getElementById('salvar').addEventListener('click', SaveClient);

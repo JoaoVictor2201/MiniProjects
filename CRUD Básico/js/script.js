@@ -47,6 +47,7 @@ const SaveClient = () => {
         }
         CreateClient(client);
         CloseModal();
+        RenderTable();
     }
 }
 
@@ -70,12 +71,20 @@ const CreateTableRow = (client) => {
     document.querySelector('#tbClients tbody').appendChild(newRow);
 }
 
-const renderTable = () => {
+const ClearTable = () => {
+    const rows = document.querySelectorAll('#tbClients tbody tr');
+    console.log('pegou as linhas');
+    rows.forEach(row => row.parentNode.removeChild(row));
+    console.log('limpou');
+}
+
+const RenderTable = () => {
+    ClearTable();
     const dbClient = ReadClient();
     dbClient.forEach(CreateTableRow);
 }
 
-renderTable();
+RenderTable();
 
 // EVENTOS
 document.getElementById('cadastrarCliente').addEventListener('click', OpenModal);

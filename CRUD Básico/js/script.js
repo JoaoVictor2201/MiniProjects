@@ -1,16 +1,10 @@
 'use strict'
 
+
 const openModal = () => document.getElementById('modal').classList.add('active');
 const closeModal = () => {
     clearFields();
     document.getElementById('modal').classList.remove('active');
-}
-
-const tempClient = {
-    name: 'Gabriel',
-    email: 'gabs@hotmail.com',
-    phone: '11998132120',
-    city: 'São Paulo'
 }
 
 const getLocalStorage = () => JSON.parse(localStorage.getItem('db_client')) ?? [];
@@ -61,6 +55,27 @@ const clearFields = () => {
     fields.forEach(field => field.value = '');
 }
 
+const createTableRow = (client) => {
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${client.name}</td>
+        <td>${client.email}</td>
+        <td>${client.phone}</td>
+        <td>${client.city}</td>
+        <td>
+            <button type="button" class="button green">editar</button>
+            <button type="button" class="button red">excluir</button>
+        </td>
+    `
+    document.querySelector('#tbClients tbody').appendChild(newRow);
+}
+
+const updateTable = () => {
+    const dbClient = readClient();
+    dbClient.forEach(createTableRow);
+}
+
+updateTable();
 
 // EVENTOS
 document.getElementById('cadastrarCliente').addEventListener('click', openModal);

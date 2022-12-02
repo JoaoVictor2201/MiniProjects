@@ -30,6 +30,7 @@ const DeleteClient = (index) => {
     const dbClient = ReadClient();
     dbClient.splice(index, 1);
     SetLocalStorage(dbClient);
+    RenderTable();
 }
 
 //Interações de usuário
@@ -45,9 +46,16 @@ const SaveClient = () => {
             phone: document.getElementById('celular').value,
             city: document.getElementById('cidade').value
         }
-        CreateClient(client);
-        CloseModal();
-        RenderTable();
+        const index = document.getElementById('nome').dataset.index;
+        if (index == 'new') {
+            CreateClient(client);
+            CloseModal();
+            RenderTable();
+        } else {
+            UpdateClient(index, client);
+            RenderTable();
+            CloseModal();
+        }
     }
 }
 
@@ -56,7 +64,7 @@ const ClearFields = () => {
     fields.forEach(field => field.value = '');
 }
 
-const CreateTableRow = (client) => {
+const CreateTableRow = (client, index) => {
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
         <td>${client.name}</td>
@@ -64,8 +72,8 @@ const CreateTableRow = (client) => {
         <td>${client.phone}</td>
         <td>${client.city}</td>
         <td>
-            <button type="button" class="button green">editar</button>
-            <button type="button" class="button red">excluir</button>
+            <button type="button" class="button green" id="edit-${index}">editar</button>
+            <button type="button" class="button red" id="delete-${index}">excluir</button>
         </td>
     `
     document.querySelector('#tbClients tbody').appendChild(newRow);
@@ -73,15 +81,44 @@ const CreateTableRow = (client) => {
 
 const ClearTable = () => {
     const rows = document.querySelectorAll('#tbClients tbody tr');
-    console.log('pegou as linhas');
     rows.forEach(row => row.parentNode.removeChild(row));
-    console.log('limpou');
 }
 
 const RenderTable = () => {
     ClearTable();
     const dbClient = ReadClient();
     dbClient.forEach(CreateTableRow);
+}
+
+const FillFields = (client) => {
+    document.getElementById('nome').value = client.name
+    document.getElementById('email').value = client.email
+    document.getElementById('celular').value = client.phone
+    document.getElementById('cidade').value = client.city
+    document.getElementById('nome').dataset.index = client.index
+}
+
+const EditClient = (index) => {
+    const client = ReadClient()[index];
+    client.index = index;
+    FillFields(client);
+    OpenModal();
+}
+
+const EditDelete = (event) => {
+    if (event.target.type == 'button') {
+        const [action, index] = event.target.id.split('-');
+        
+        if (action == 'edit') {
+            EditClient(index);
+        } else {
+            const client = ReadClient()[index];
+            const response = confirm(`Tem cereteza que quer apagar ${client.name} dos registros?`);
+            if (response) {
+                DeleteClient(index);
+            }
+        }
+    }
 }
 
 RenderTable();
@@ -91,3 +128,4 @@ document.getElementById('cadastrarCliente').addEventListener('click', OpenModal)
 document.getElementById('modalClose').addEventListener('click', CloseModal);
 document.getElementById('cancelar').addEventListener('click', CloseModal);
 document.getElementById('salvar').addEventListener('click', SaveClient);
+document.querySelector('#tbClients tbody').addEventListener('click', EditDelete)

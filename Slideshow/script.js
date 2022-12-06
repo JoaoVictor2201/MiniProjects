@@ -8,7 +8,7 @@ const images = [
     { 'id' : '5', 'url' : './images/slide-5.png' },
 ];
 
-const container = document.querySelector("#container-items");
+const containerItems = document.querySelector("#container-items");
 
 const LoadImages = (images, container) => {
     images.forEach(image => {
@@ -20,4 +20,20 @@ const LoadImages = (images, container) => {
     })
 }
 
-LoadImages(images, container);
+LoadImages(images, containerItems);
+
+let items = document.querySelectorAll('.item');
+
+const previous = () => {
+    const lastItem = items[items.length - 1];
+    containerItems.insertBefore(lastItem, items[0]);
+    items = document.querySelectorAll('.item');
+}
+
+const next = () => {
+    containerItems.appendChild(items[0]);
+    items = document.querySelectorAll('.item');
+}
+
+document.querySelector('#previous').addEventListener('click', previous);
+document.querySelector('#next').addEventListener('click', next);

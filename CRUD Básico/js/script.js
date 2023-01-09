@@ -91,11 +91,11 @@ const RenderTable = () => {
 }
 
 const FillFields = (client) => {
-    document.getElementById('nome').value = client.name
-    document.getElementById('email').value = client.email
-    document.getElementById('celular').value = client.phone
-    document.getElementById('cidade').value = client.city
-    document.getElementById('nome').dataset.index = client.index
+    document.getElementById('nome').value = client.name;
+    document.getElementById('email').value = client.email;
+    document.getElementById('celular').value = client.phone;
+    document.getElementById('cidade').value = client.city;
+    document.getElementById('nome').dataset.index = client.index;
 }
 
 const EditClient = (index) => {
